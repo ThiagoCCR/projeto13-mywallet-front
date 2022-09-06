@@ -85,7 +85,7 @@ export default function Signup() {
               name="ConfirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              placeholder="Confirme a sua senha"
+              placeholder="Confirme a senha"
               type="password"
               required
             />
