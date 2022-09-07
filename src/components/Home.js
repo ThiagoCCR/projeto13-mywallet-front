@@ -1,9 +1,16 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
 
 export default function Home() {
   const [entryLog, setEntryLog] = useState(null);
+  const { userData } = useContext(UserContext);
+
+  useEffect(() => {
+    const userEmail = userData.email;
+    //pegar logs da API
+  }, []);
 
   return (
     <Wrapper>
@@ -74,8 +81,10 @@ const LogContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 10px;
   p {
+    margin-top: 50%;
     width: 60%;
     font-family: "Raleway";
     font-weight: 400;

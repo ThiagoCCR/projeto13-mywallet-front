@@ -16,18 +16,12 @@ export default function Signup() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
-  function handleSignUn(e) {
+  function handleSignUp(e) {
     e.preventDefault();
     const password = e.target[1].value;
     const confirmedPassword = e.target[3].value;
 
     if (password !== confirmedPassword) {
-      setFormData({
-        email: "",
-        password: "",
-        name: "",
-        confirmPassword: "",
-      });
       return alert("As senhas estão diferentes!");
     }
 
@@ -56,7 +50,7 @@ export default function Signup() {
       <Container>
         <h1>MyWallet</h1>
         <Login>
-          <form onSubmit={handleSignUn}>
+          <form onSubmit={handleSignUp}>
             <input
               name="name"
               placeholder="Nome"

@@ -1,12 +1,15 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInAPI } from "../services/myWallet";
+import UserContext from "../contexts/UserContext";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const {userData, setUserData} = useContext(UserContext);
   const navigate = useNavigate();
+
 
   function handleSignIn(e) {
     e.preventDefault();
@@ -15,6 +18,7 @@ export default function SignIn() {
     signInAPI(body)
       .then((res) => {
         window.scrollTo(0, 0);
+        setUserData({email})
         navigate("/home");
       })
       .catch((error) => {

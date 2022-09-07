@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
 
 export default function NewIncome() {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
+  const { userData } = useContext(UserContext);
+
 
   function handleFormData(e) {
     e.preventDefault();

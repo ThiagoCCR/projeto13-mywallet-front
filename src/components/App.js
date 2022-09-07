@@ -4,18 +4,24 @@ import SignUp from "./SignUp.js";
 import Home from "./Home.js";
 import NewIncome from "./NewIncome.js";
 import NewOutcome from "./NewOutcome.js";
+import UserContext from "../contexts/UserContext.js";
+import { useState } from "react";
 
 function App() {
+  const [userData, setUserData] = useState({ image: "", token: "" });
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SignIn />} />
-        <Route path="/cadastro" element={<SignUp />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/novaentrada" element={<NewIncome />} />
-        <Route path="/novasaida" element={<NewOutcome />} />
-      </Routes>
-    </BrowserRouter>
+    <UserContext.Provider value={{ userData, setUserData }}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+          <Route path="/cadastro" element={<SignUp />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/novaentrada" element={<NewIncome />} />
+          <Route path="/novasaida" element={<NewOutcome />} />
+        </Routes>
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 
