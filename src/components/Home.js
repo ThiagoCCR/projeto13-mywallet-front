@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [entryLog, setEntryLog] = useState(null);
@@ -9,7 +9,9 @@ export default function Home() {
     <Wrapper>
       <Header>
         <h1>Olá, Fulano</h1>
-        <ion-icon name="exit-outline"></ion-icon>
+        <Link to={"/"}>
+          <ion-icon name="exit-outline"></ion-icon>
+        </Link>
       </Header>
       <LogContainer>
         {entryLog ? (
@@ -19,14 +21,18 @@ export default function Home() {
         )}
       </LogContainer>
       <Footer>
-        <div>
-          <ion-icon name="add-circle-outline"></ion-icon>
-          <p>Nova entrada</p>
-        </div>
-        <div>
-          <ion-icon name="remove-circle-outline"></ion-icon>
-          <p>Nova saída</p>
-        </div>
+        <Link to={"/novaentrada"}>
+          <div>
+            <ion-icon name="add-circle-outline"></ion-icon>
+            <p>Nova entrada</p>
+          </div>
+        </Link>
+        <Link to={"/novasaida"}>
+          <div>
+            <ion-icon name="remove-circle-outline"></ion-icon>
+            <p>Nova entrada</p>
+          </div>
+        </Link>
       </Footer>
     </Wrapper>
   );
