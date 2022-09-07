@@ -9,6 +9,8 @@ import { useState } from "react";
 
 function App() {
   const [userData, setUserData] = useState({ image: "", token: "" });
+  const [isLoading, setisLoading] = useState(false);
+
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>

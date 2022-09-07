@@ -2,20 +2,19 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function NewIncome() {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
-  const { userData } = useContext(UserContext);
-
+  const { userData, isLoading, setisLoading } = useContext(UserContext);
 
   function handleFormData(e) {
     e.preventDefault();
-    const body  = {value, description};
+    const body = { value, description };
     //pegar token
     //pegar username
     //postinfo
-
   }
 
   return (
@@ -38,7 +37,15 @@ export default function NewIncome() {
             required
           />
           <Link to={"/home"}>
-          <button type="submit">Salvar entrada</button>
+            <button type="submit">
+              {isLoading ? (
+                <div>
+                  <ThreeDots color="#ffffff" />
+                </div>
+              ) : (
+                <p>Salvar Entrada</p>
+              )}
+            </button>
           </Link>
         </form>
       </Container>

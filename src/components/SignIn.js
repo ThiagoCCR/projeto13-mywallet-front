@@ -3,28 +3,32 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInAPI } from "../services/myWallet";
 import UserContext from "../contexts/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {userData, setUserData} = useContext(UserContext);
+  const { userData, setUserData, isLoading, setisLoading } =
+    useContext(UserContext);
   const navigate = useNavigate();
-
 
   function handleSignIn(e) {
     e.preventDefault();
+    setisLoading(!isLoading);
     const body = { email, password };
 
     signInAPI(body)
       .then((res) => {
         window.scrollTo(0, 0);
-        setUserData({email})
+        setUserData({ email });
+        setisLoading(!isLoading);
         navigate("/home");
       })
       .catch((error) => {
         setEmail("");
         setPassword("");
         alert(error.message);
+        setisLoading(!isLoading);
       });
   }
 
@@ -39,6 +43,7 @@ export default function SignIn() {
               type="email"
               placeholder="E-mail"
               value={email}
+              disabled={isLoading}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
@@ -47,10 +52,19 @@ export default function SignIn() {
               type="password"
               placeholder="Senha"
               value={password}
+              disabled={isLoading}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button type="submit">Entrar</button>
+            <button type="submit">
+              {isLoading ? (
+                <div>
+                  <ThreeDots color="#ffffff" />
+                </div>
+              ) : (
+                <p>Entrar</p>
+              )}
+            </button>
           </form>
         </Login>
         <Link to={"/cadastro"}>

@@ -2,11 +2,12 @@ import { useState, useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function NewOutcome() {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
-  const { userData } = useContext(UserContext);
+  const { userData, isLoading, setisLoading } = useContext(UserContext);
 
   function handleFormData(e) {
     e.preventDefault();
@@ -36,7 +37,15 @@ export default function NewOutcome() {
             required
           />
           <Link to={"/home"}>
-            <button type="submit">Salvar saída</button>
+            <button type="submit">
+              {isLoading ? (
+                <div>
+                  <ThreeDots color="#ffffff" />
+                </div>
+              ) : (
+                <p>Salvar Saída</p>
+              )}
+            </button>
           </Link>
         </form>
       </Container>

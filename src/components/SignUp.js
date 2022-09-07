@@ -1,16 +1,19 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signUpAPI } from "../services/myWallet";
+import { ThreeDots } from "react-loader-spinner";
+import UserContext from "../contexts/UserContext";
 
 export default function Signup() {
-  const navigate = useNavigate();
+  const { isLoading, setisLoading } = useContext(UserContext);
   const [formData, setFormData] = useState({
     email: "",
     name: "",
     password: "",
     confirmPassword: "",
   });
+  const navigate = useNavigate();
 
   function handleInputChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,6 +21,7 @@ export default function Signup() {
 
   function handleSignUp(e) {
     e.preventDefault();
+    setisLoading(!isLoading);
     const password = e.target[1].value;
     const confirmedPassword = e.target[3].value;
 
@@ -32,6 +36,7 @@ export default function Signup() {
     })
       .then((res) => {
         window.scrollTo(0, 0);
+        setisLoading(!isLoading);
         navigate("/");
       })
       .catch((error) => {
@@ -42,6 +47,7 @@ export default function Signup() {
           confirmPassword: "",
         });
         alert(error.message);
+        setisLoading(!isLoading);
       });
   }
 
@@ -57,6 +63,7 @@ export default function Signup() {
               value={formData.name}
               onChange={handleInputChange}
               type="text"
+              disabled={isLoading}
               required
             />
             <input
@@ -65,6 +72,7 @@ export default function Signup() {
               type="email"
               onChange={handleInputChange}
               value={formData.email}
+              disabled={isLoading}
               required
             />
             <input
@@ -73,6 +81,7 @@ export default function Signup() {
               onChange={handleInputChange}
               placeholder="Senha"
               type="password"
+              disabled={isLoading}
               required
             />
             <input
@@ -81,9 +90,18 @@ export default function Signup() {
               onChange={handleInputChange}
               placeholder="Confirme a senha"
               type="password"
+              disabled={isLoading}
               required
             />
-            <button type="submit">Entrar</button>
+            <button type="submit">
+              {isLoading ? (
+                <div>
+                  <ThreeDots color="#ffffff" />
+                </div>
+              ) : (
+                <p>Cadastrar</p>
+              )}
+            </button>
           </form>
         </Login>
         <Link to={"/"}>
