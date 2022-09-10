@@ -54,7 +54,7 @@ export default function Home() {
         </Link>
       </Header>
       <LogContainer>
-        {entryLog ? (
+        {entryLog === null ? (
           <p>Não há registros de entrada ou saída</p>
         ) : (
           entryLog.map((val, i) => (
@@ -67,7 +67,7 @@ export default function Home() {
             />
           ))
         )}
-        {entryLog ? (
+        {entryLog === null ? (
           <div></div>
         ) : (
           <div>
