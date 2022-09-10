@@ -18,7 +18,7 @@ export default function NewIncome() {
 
     const formatedValue = Number(value).toFixed(2);
 
-    const body = { value: String(formatedValue), description, type: "outcome" };
+    const body = { value: String(formatedValue), description, type: "income" };
     const config = {
       headers: {
         Authorization: `Bearer ${userData.token}`,

@@ -55,6 +55,8 @@ export default function Home() {
       </Header>
       <LogContainer>
         {entryLog ? (
+          <p>Não há registros de entrada ou saída</p>
+        ) : (
           entryLog.map((val, i) => (
             <Log
               key={i}
@@ -64,10 +66,10 @@ export default function Home() {
               type={val.type}
             />
           ))
-        ) : (
-          <p>Não há registros de entrada ou saída</p>
         )}
         {entryLog ? (
+          <div></div>
+        ) : (
           <div>
             <Total totalVal={total}>
               <div>
@@ -78,8 +80,6 @@ export default function Home() {
               </div>
             </Total>
           </div>
-        ) : (
-          <div></div>
         )}
       </LogContainer>
       <Footer>
