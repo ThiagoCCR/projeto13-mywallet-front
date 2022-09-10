@@ -1,20 +1,40 @@
 import { useState, useContext } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 import { ThreeDots } from "react-loader-spinner";
+import { createLogInAPI } from "../services/myWallet";
 
 export default function NewIncome() {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
   const { userData, isLoading, setisLoading } = useContext(UserContext);
 
+  const navigate = useNavigate();
+
   function handleFormData(e) {
     e.preventDefault();
-    const body = { value, description };
-    //pegar token
-    //pegar username
-    //postinfo
+    setisLoading(true);
+
+    const formatedValue = Number(value).toFixed(2);
+
+    const body = { value: String(formatedValue), description, type: "outcome" };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    };
+    createLogInAPI(body, config)
+      .then((res) => {
+        alert("Log criado com sucesso");
+        setisLoading(false);
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setisLoading(false);
+        alert(error.message);
+      });
   }
 
   return (
@@ -26,6 +46,7 @@ export default function NewIncome() {
             name="value"
             placeholder="Valor"
             value={value}
+            disabled={isLoading}
             onChange={(e) => setValue(e.target.value)}
             required
           />
@@ -33,20 +54,19 @@ export default function NewIncome() {
             name="description"
             placeholder="Descrição"
             value={description}
+            disabled={isLoading}
             onChange={(e) => setDescription(e.target.value)}
             required
           />
-          <Link to={"/home"}>
-            <button type="submit">
-              {isLoading ? (
-                <div>
-                  <ThreeDots color="#ffffff" />
-                </div>
-              ) : (
-                <p>Salvar Entrada</p>
-              )}
-            </button>
-          </Link>
+          <button type="submit">
+            {isLoading ? (
+              <div>
+                <ThreeDots color="#ffffff" />
+              </div>
+            ) : (
+              <p>Salvar Entrada</p>
+            )}
+          </button>
         </form>
       </Container>
     </Wrapper>

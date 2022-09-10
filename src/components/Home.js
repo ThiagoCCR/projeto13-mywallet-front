@@ -2,29 +2,84 @@ import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
+import { getLogsFromAPI } from "../services/myWallet";
+import Log from "./Log";
 
 export default function Home() {
   const [entryLog, setEntryLog] = useState(null);
   const { userData } = useContext(UserContext);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const userEmail = userData.email;
-    //pegar logs da API
-  }, []);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    };
+    getLogsFromAPI(config)
+      .then((res) => {
+        console.log(res.data);
+        setEntryLog(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.message);
+      });
+  }, [userData]);
+
+  useEffect(() => {
+    let totalVal = 0;
+    if (entryLog === null) {
+      return;
+    }
+    console.log("passeiaq");
+    for (let i = 0; i < entryLog.length; i++) {
+      let iteratedVal = Number(entryLog[i].value);
+      if (entryLog[i].type === "outcome") {
+        totalVal = totalVal - iteratedVal;
+      } else {
+        totalVal = totalVal + iteratedVal;
+      }
+    }
+    totalVal = totalVal.toFixed(2);
+    setTotal(totalVal);
+  }, [entryLog]);
 
   return (
     <Wrapper>
       <Header>
-        <h1>Olá, Fulano</h1>
+        <h1>Olá, {userData.name}</h1>
         <Link to={"/"}>
           <ion-icon name="exit-outline"></ion-icon>
         </Link>
       </Header>
       <LogContainer>
         {entryLog ? (
-          <p>entradas</p>
+          entryLog.map((val, i) => (
+            <Log
+              key={i}
+              description={val.description}
+              value={val.value}
+              date={val.date}
+              type={val.type}
+            />
+          ))
         ) : (
           <p>Não há registros de entrada ou saída</p>
+        )}
+        {entryLog ? (
+          <div>
+            <Total totalVal={total}>
+              <div>
+                <p>SALDO</p>
+              </div>
+              <div>
+                <h2>{total}</h2>
+              </div>
+            </Total>
+          </div>
+        ) : (
+          <div></div>
         )}
       </LogContainer>
       <Footer>
@@ -37,7 +92,7 @@ export default function Home() {
         <Link to={"/novasaida"}>
           <div>
             <ion-icon name="remove-circle-outline"></ion-icon>
-            <p>Nova entrada</p>
+            <p>Nova saída</p>
           </div>
         </Link>
       </Footer>
@@ -81,8 +136,14 @@ const LogContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: scroll;
   justify-content: flex-start;
-  padding: 10px;
+  overflow-x: hidden;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 0px;
+  position: relative;
   p {
     margin-top: 50%;
     width: 60%;
@@ -121,5 +182,31 @@ const Footer = styled.div`
       line-height: 20px;
       margin-top: 15px;
     }
+  }
+`;
+
+const Total = styled.div`
+  position: absolute;
+  bottom: 10px !important;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center !important;
+  justify-content: space-between !important;
+  left: 10px;
+  p {
+    font-family: "Raleway";
+    font-weight: 700;
+    color: #000000;
+    margin-top: 0px;
+    font-size: 17px;
+  }
+  h2 {
+    font-family: "Raleway";
+    font-weight: 700;
+    color: ${(props) => (props.totalVal > 0 ? "#03AC00" : "#C70000")};
+    margin-top: 0px;
+    font-size: 17px;
   }
 `;

@@ -21,11 +21,12 @@ export default function Signup() {
 
   function handleSignUp(e) {
     e.preventDefault();
-    setisLoading(!isLoading);
-    const password = e.target[1].value;
+    setisLoading(true);
+    const password = e.target[2].value;
     const confirmedPassword = e.target[3].value;
 
     if (password !== confirmedPassword) {
+      setisLoading(false);
       return alert("As senhas estão diferentes!");
     }
 
@@ -36,7 +37,7 @@ export default function Signup() {
     })
       .then((res) => {
         window.scrollTo(0, 0);
-        setisLoading(!isLoading);
+        setisLoading(false);
         navigate("/");
       })
       .catch((error) => {
@@ -47,7 +48,7 @@ export default function Signup() {
           confirmPassword: "",
         });
         alert(error.message);
-        setisLoading(!isLoading);
+        setisLoading(false);
       });
   }
 
@@ -85,7 +86,7 @@ export default function Signup() {
               required
             />
             <input
-              name="ConfirmPassword"
+              name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
               placeholder="Confirme a senha"

@@ -13,7 +13,7 @@ function App() {
 
 
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <UserContext.Provider value={{ userData, setUserData, isLoading, setisLoading }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignIn />} />

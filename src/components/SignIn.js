@@ -8,27 +8,27 @@ import { ThreeDots } from "react-loader-spinner";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { userData, setUserData, isLoading, setisLoading } =
+  const { setUserData, isLoading, setisLoading } =
     useContext(UserContext);
   const navigate = useNavigate();
 
   function handleSignIn(e) {
     e.preventDefault();
-    setisLoading(!isLoading);
+    setisLoading(true);
     const body = { email, password };
 
     signInAPI(body)
       .then((res) => {
         window.scrollTo(0, 0);
-        setUserData({ email });
-        setisLoading(!isLoading);
+        setUserData({ name: res.data.name, token: res.data.token });
+        setisLoading(false);
         navigate("/home");
       })
       .catch((error) => {
         setEmail("");
         setPassword("");
         alert(error.message);
-        setisLoading(!isLoading);
+        setisLoading(false);
       });
   }
 
