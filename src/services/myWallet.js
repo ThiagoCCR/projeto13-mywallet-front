@@ -20,4 +20,9 @@ function createLogInAPI(body,config) {
   return promise;
 }
 
-export { signInAPI, signUpAPI, getLogsFromAPI, createLogInAPI };
+function deleteLogFromAPI(param,config) {
+  const promise = axios.delete(`http://localhost:5000/logs/${param}`, config);
+  return promise;
+}
+
+export { signInAPI, signUpAPI, getLogsFromAPI, createLogInAPI, deleteLogFromAPI };

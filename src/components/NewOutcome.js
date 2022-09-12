@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 import { ThreeDots } from "react-loader-spinner";
 import { createLogInAPI } from "../services/myWallet";
@@ -39,7 +39,7 @@ export default function NewOutcome() {
   return (
     <Wrapper>
       <Container>
-        <h1>Nova entrada</h1>
+        <h1>Nova Saída</h1>
         <form onSubmit={handleFormData}>
           <input
             name="value"
@@ -102,6 +102,10 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
       width: 325px;
       height: 60px;
       font-family: "Raleway";

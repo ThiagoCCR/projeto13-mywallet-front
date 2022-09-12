@@ -1,49 +1,61 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 import { getLogsFromAPI } from "../services/myWallet";
 import Log from "./Log";
 
 export default function Home() {
-  const [entryLog, setEntryLog] = useState(null);
+  const [entryLog, setEntryLog] = useState([]);
   const { userData } = useContext(UserContext);
   const [total, setTotal] = useState(0);
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userData.token}`,
-      },
-    };
-    getLogsFromAPI(config)
-      .then((res) => {
-        console.log(res.data);
-        setEntryLog(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error.message);
-      });
-  }, [userData]);
-
-  useEffect(() => {
-    let totalVal = 0;
-    if (entryLog === null) {
-      return;
-    }
-    console.log("passeiaq");
-    for (let i = 0; i < entryLog.length; i++) {
-      let iteratedVal = Number(entryLog[i].value);
-      if (entryLog[i].type === "outcome") {
-        totalVal = totalVal - iteratedVal;
-      } else {
-        totalVal = totalVal + iteratedVal;
+  const calculateTotal = useCallback(
+    (arrayOfLogs) => {
+      let totalVal = 0;
+      if (arrayOfLogs === null) {
+        return;
       }
-    }
-    totalVal = totalVal.toFixed(2);
-    setTotal(totalVal);
-  }, [entryLog]);
+      for (let i = 0; i < arrayOfLogs.length; i++) {
+        let iteratedVal = Number(arrayOfLogs[i].value);
+        if (arrayOfLogs[i].type === "outcome") {
+          totalVal = totalVal - iteratedVal;
+        } else {
+          totalVal = totalVal + iteratedVal;
+        }
+      }
+      totalVal = totalVal.toFixed(2);
+      setTotal(totalVal);
+    },
+    [setTotal]
+  );
+
+  const getLogs = useCallback(
+    (token) => {
+      if (!token) {
+        alert("Autorização não informada");
+        return;
+      }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      getLogsFromAPI(config)
+        .then((res) => {
+          setEntryLog(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(error.message);
+        });
+    },
+    [setEntryLog]
+  );
+
+  useEffect(() => getLogs(userData.token), [getLogs, userData.token]);
+
+  useEffect(() => calculateTotal(entryLog), [entryLog, calculateTotal]);
 
   return (
     <Wrapper>
@@ -53,24 +65,28 @@ export default function Home() {
           <ion-icon name="exit-outline"></ion-icon>
         </Link>
       </Header>
-      <LogContainer>
-        {entryLog === null ? (
-          <p>Não há registros de entrada ou saída</p>
-        ) : (
-          entryLog.map((val, i) => (
-            <Log
-              key={i}
-              description={val.description}
-              value={val.value}
-              date={val.date}
-              type={val.type}
-            />
-          ))
-        )}
-        {entryLog === null ? (
-          <div></div>
-        ) : (
-          <div>
+      <Container>
+        <LogContainer>
+          {entryLog.length === 0 ? (
+            <p>Não há registros de entrada ou saída</p>
+          ) : (
+            entryLog.map((val, i) => (
+              <Log
+                key={i}
+                description={val.description}
+                value={val.value}
+                date={val.date}
+                type={val.type}
+                id={val._id}
+                getLogs={getLogs}
+              />
+            ))
+          )}
+        </LogContainer>
+        <TotalContainer>
+          {entryLog.length === 0 ? (
+            <div></div>
+          ) : (
             <Total totalVal={total}>
               <div>
                 <p>SALDO</p>
@@ -79,9 +95,9 @@ export default function Home() {
                 <h2>{total}</h2>
               </div>
             </Total>
-          </div>
-        )}
-      </LogContainer>
+          )}
+        </TotalContainer>
+      </Container>
       <Footer>
         <Link to={"/novaentrada"}>
           <div>
@@ -128,22 +144,30 @@ const Header = styled.div`
   }
 `;
 
-const LogContainer = styled.div`
-  width: 326px;
+const Container = styled.div`
+ width: 326px;
   height: 446px;
   background: #ffffff;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: scroll;
-  justify-content: flex-start;
-  overflow-x: hidden;
+  justify-content: space-between;
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 5px;
-  padding-bottom: 0px;
-  position: relative;
+  padding-bottom: 5px;
+`
+
+const LogContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+  justify-content: flex-start;
+  overflow-x: hidden;
   p {
     margin-top: 50%;
     width: 60%;
@@ -185,16 +209,19 @@ const Footer = styled.div`
   }
 `;
 
-const Total = styled.div`
-  position: absolute;
-  bottom: 10px !important;
+const TotalContainer = styled.div`
   width: 100%;
-  padding: 0 20px;
+`
+
+
+const Total = styled.div`
+  width: 100%;
+  height: 20px;
   display: flex;
   flex-direction: row;
-  align-items: center !important;
+  align-items:  center!important;
   justify-content: space-between !important;
-  left: 10px;
+  background-color: #ffffff;
   p {
     font-family: "Raleway";
     font-weight: 700;

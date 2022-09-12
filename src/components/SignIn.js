@@ -113,6 +113,10 @@ const Login = styled.div`
     justify-content: center;
     align-items: center;
     button {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
       width: 325px;
       height: 60px;
       font-family: "Raleway";
