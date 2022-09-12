@@ -21,7 +21,11 @@ export default function SignIn() {
         window.scrollTo(0, 0);
         localStorage.setItem(
           "USER",
-          JSON.stringify({ name: res.data.name, token: res.data.token })
+          JSON.stringify({
+            name: res.data.name,
+            token: res.data.token,
+            timestamp: +new Date(),
+          })
         );
         setisLoading(false);
         navigate("/home");
