@@ -8,8 +8,7 @@ import { ThreeDots } from "react-loader-spinner";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, setisLoading } =
-    useContext(UserContext);
+  const { isLoading, setisLoading } = useContext(UserContext);
   const navigate = useNavigate();
 
   function handleSignIn(e) {

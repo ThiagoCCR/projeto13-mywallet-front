@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getLogsFromAPI } from "../services/myWallet";
+import { IoExitOutline } from "react-icons/io5";
+import { IconContext } from "react-icons";
 import Log from "./Log";
 
 export default function Home() {
@@ -67,7 +69,17 @@ export default function Home() {
       <Header>
         <h1>Olá, {userData.name}</h1>
         <div onClick={() => Logout()}>
-          <ion-icon name="exit-outline"></ion-icon>
+          <IconContext.Provider
+            value={{
+              color: "#FFFFFF",
+              className: "global-class-name",
+              size: "35px",
+            }}
+          >
+            <div>
+              <IoExitOutline />
+            </div>
+          </IconContext.Provider>
         </div>
       </Header>
       <Container>

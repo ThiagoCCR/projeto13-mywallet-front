@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { deleteLogFromAPI } from "../services/myWallet";
 import { useNavigate } from "react-router-dom";
+import { IoCloseSharp } from "react-icons/io5";
+import { IconContext } from "react-icons";
 
 export default function Log({ description, value, date, type, id, getLogs }) {
   const userData = JSON.parse(localStorage.getItem("USER"));
@@ -35,9 +37,19 @@ export default function Log({ description, value, date, type, id, getLogs }) {
         <ValueText logType={type}>
           <p>{value}</p>
         </ValueText>
-        <div onClick={() => deleteLog()}>
-          <ion-icon name="close-outline"></ion-icon>
-        </div>
+        <IconContainer onClick={() => deleteLog()}>
+          <IconContext.Provider
+            value={{
+              color: "#C6C6C6",
+              className: "global-class-name",
+              size: "20px",
+            }}
+          >
+            <div>
+              <IoCloseSharp />
+            </div>
+          </IconContext.Provider>
+        </IconContainer>
       </Teste>
     </Wrapper>
   );
@@ -80,11 +92,12 @@ const Teste = styled.div`
   justify-content: flex-end;
   padding-right: 60px;
   position: relative;
-  ion-icon {
-    position: absolute;
-    right: 0px;
-    top: 5px;
-  }
+`;
+
+const IconContainer = styled.div`
+  position: absolute;
+  right: 0px;
+  top: 5px;
 `;
 
 const ValueText = styled.div`

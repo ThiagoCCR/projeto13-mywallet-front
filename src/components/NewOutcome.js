@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 import { ThreeDots } from "react-loader-spinner";
 import { createLogInAPI } from "../services/myWallet";
+import { IoArrowUndoSharp } from "react-icons/io5";
+import { IconContext } from "react-icons";
 
 export default function NewOutcome() {
   const [value, setValue] = useState("");
@@ -11,6 +13,12 @@ export default function NewOutcome() {
   const { isLoading, setisLoading } = useContext(UserContext);
   const navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem("USER"));
+
+  function ReturnToHome() {
+    setValue("");
+    setDescription("");
+    navigate("/home");
+  }
 
   function handleFormData(e) {
     e.preventDefault();
@@ -40,7 +48,24 @@ export default function NewOutcome() {
   return (
     <Wrapper>
       <Container>
-        <h1>Nova Saída</h1>
+        <HeaderContainer>
+          <div>
+            <h1>Nova Entrada</h1>
+          </div>
+          <div onClick={() => ReturnToHome()}>
+            <IconContext.Provider
+              value={{
+                color: "#FFFFFF",
+                className: "global-class-name",
+                size: "35px",
+              }}
+            >
+              <div>
+                <IoArrowUndoSharp />
+              </div>
+            </IconContext.Provider>
+          </div>
+        </HeaderContainer>
         <form onSubmit={handleFormData}>
           <input
             name="value"
@@ -82,6 +107,22 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const HeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 325px;
+
+  h1 {
+    font-family: Raleway;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 81px;
+  }
+`;
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -89,14 +130,6 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  h1 {
-    font-family: Raleway;
-    font-size: 26px;
-    font-weight: 700;
-    color: #ffffff;
-    line-height: 81px;
-    margin-right: 160px;
-  }
   form {
     display: flex;
     flex-direction: column;
