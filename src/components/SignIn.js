@@ -152,7 +152,7 @@ const Login = styled.div`
 
 const SignUp = styled.div`
   h2 {
-    margin-top: 10px;
+    margin-top: 20px;
     text-decoration: underline;
     font-family: "Raleway";
     color: #ffffff;
