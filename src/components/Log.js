@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import { deleteLogFromAPI } from "../services/myWallet";
-import UserContext from "../contexts/UserContext";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Log({ description, value, date, type, id, getLogs }) {
-  const { userData } = useContext(UserContext);
+  const userData = JSON.parse(localStorage.getItem("USER"));
   const navigate = useNavigate();
 
   function deleteLog() {
@@ -17,13 +15,13 @@ export default function Log({ description, value, date, type, id, getLogs }) {
     if (window.confirm("Tem certeza que deseja excluir esse registro?")) {
       deleteLogFromAPI(id, config)
         .then(() => {
+          getLogs(userData.token);
           navigate("/home");
         })
         .catch((err) => {
           console.log(err.message);
           alert(err.message);
         });
-      getLogs(userData.token);
     }
   }
 
@@ -33,12 +31,14 @@ export default function Log({ description, value, date, type, id, getLogs }) {
         <h2>{date}</h2>
         <p>{description}</p>
       </LogDescription>
-      <ValueText logType={type}>
-        <p>{value}</p>
-      </ValueText>
-      <div onClick={() => deleteLog()}>
-        <ion-icon name="close-outline"></ion-icon>
-      </div>
+      <Teste>
+        <ValueText logType={type}>
+          <p>{value}</p>
+        </ValueText>
+        <div onClick={() => deleteLog()}>
+          <ion-icon name="close-outline"></ion-icon>
+        </div>
+      </Teste>
     </Wrapper>
   );
 }
@@ -48,12 +48,11 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-top: 10px;
 `;
 
 const LogDescription = styled.div`
-  width: 60%;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -70,11 +69,25 @@ const LogDescription = styled.div`
     color: #000000 !important;
     font-weight: 400 !important;
     margin-top: 0px !important;
+    margin-left: 15px;
+  }
+`;
+
+const Teste = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 60px;
+  position: relative;
+  ion-icon {
+    position: absolute;
+    right: 0px;
+    top: 5px;
   }
 `;
 
 const ValueText = styled.div`
-  width: 40%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;

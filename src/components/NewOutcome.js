@@ -8,8 +8,9 @@ import { createLogInAPI } from "../services/myWallet";
 export default function NewOutcome() {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
-  const { userData, isLoading, setisLoading } = useContext(UserContext);
+  const { isLoading, setisLoading } = useContext(UserContext);
   const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("USER"));
 
   function handleFormData(e) {
     e.preventDefault();

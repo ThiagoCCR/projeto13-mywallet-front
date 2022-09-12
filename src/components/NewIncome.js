@@ -8,7 +8,8 @@ import { createLogInAPI } from "../services/myWallet";
 export default function NewIncome() {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
-  const { userData, isLoading, setisLoading } = useContext(UserContext);
+  const { isLoading, setisLoading } = useContext(UserContext);
+  const userData = JSON.parse(localStorage.getItem("USER"));
 
   const navigate = useNavigate();
 

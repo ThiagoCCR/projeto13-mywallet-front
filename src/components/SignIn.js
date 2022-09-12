@@ -8,7 +8,7 @@ import { ThreeDots } from "react-loader-spinner";
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUserData, isLoading, setisLoading } =
+  const { isLoading, setisLoading } =
     useContext(UserContext);
   const navigate = useNavigate();
 
@@ -20,7 +20,10 @@ export default function SignIn() {
     signInAPI(body)
       .then((res) => {
         window.scrollTo(0, 0);
-        setUserData({ name: res.data.name, token: res.data.token });
+        localStorage.setItem(
+          "USER",
+          JSON.stringify({ name: res.data.name, token: res.data.token })
+        );
         setisLoading(false);
         navigate("/home");
       })

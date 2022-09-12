@@ -8,12 +8,11 @@ import UserContext from "../contexts/UserContext.js";
 import { useState } from "react";
 
 function App() {
-  const [userData, setUserData] = useState({ image: "", token: "" });
   const [isLoading, setisLoading] = useState(false);
 
 
   return (
-    <UserContext.Provider value={{ userData, setUserData, isLoading, setisLoading }}>
+    <UserContext.Provider value={{ isLoading, setisLoading }}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignIn />} />

@@ -1,14 +1,19 @@
 import styled from "styled-components";
-import { useCallback, useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { getLogsFromAPI } from "../services/myWallet";
 import Log from "./Log";
 
 export default function Home() {
   const [entryLog, setEntryLog] = useState([]);
-  const { userData } = useContext(UserContext);
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem("USER"));
+
+  function Logout() {
+    localStorage.removeItem("USER");
+    navigate("/");
+  }
 
   const calculateTotal = useCallback(
     (arrayOfLogs) => {
@@ -61,9 +66,9 @@ export default function Home() {
     <Wrapper>
       <Header>
         <h1>Olá, {userData.name}</h1>
-        <Link to={"/"}>
+        <div onClick={() => Logout()}>
           <ion-icon name="exit-outline"></ion-icon>
-        </Link>
+        </div>
       </Header>
       <Container>
         <LogContainer>
@@ -145,7 +150,7 @@ const Header = styled.div`
 `;
 
 const Container = styled.div`
- width: 326px;
+  width: 326px;
   height: 446px;
   background: #ffffff;
   border-radius: 5px;
@@ -157,7 +162,7 @@ const Container = styled.div`
   padding-right: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
-`
+`;
 
 const LogContainer = styled.div`
   width: 100%;
@@ -211,15 +216,14 @@ const Footer = styled.div`
 
 const TotalContainer = styled.div`
   width: 100%;
-`
-
+`;
 
 const Total = styled.div`
   width: 100%;
   height: 20px;
   display: flex;
   flex-direction: row;
-  align-items:  center!important;
+  align-items: center !important;
   justify-content: space-between !important;
   background-color: #ffffff;
   p {
