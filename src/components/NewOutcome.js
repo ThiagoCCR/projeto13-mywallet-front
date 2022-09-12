@@ -24,7 +24,9 @@ export default function NewOutcome() {
     e.preventDefault();
     setisLoading(true);
 
-    const formatedValue = Number(value).toFixed(2);
+    let formatedValue = value.replace(",", ".");
+
+    formatedValue = Number(formatedValue).toFixed(2);
 
     const body = { value: String(formatedValue), description, type: "outcome" };
     const config = {

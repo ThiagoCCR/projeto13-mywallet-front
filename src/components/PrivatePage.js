@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const SEC = 1000;
 const MIN_10 = SEC * 60 * 10;
@@ -11,7 +11,7 @@ export default function PrivatePage({ children }) {
   useEffect(() => {
     if (localStorage.getItem("USER") === null) {
       //return <Navigate to="/" />;
-      navigate("/")
+      navigate("/");
     }
   }, [navigate, auth.timestamp, auth.token, children]);
 
@@ -27,9 +27,9 @@ export default function PrivatePage({ children }) {
   if (now - timeLogged <= MIN_10) {
     return <>{children}</>;
   } else {
-    alert("caiu")
+    alert("caiu");
     localStorage.clear("USER");
     //return <Navigate to="/" />;
-    navigate("/")
+    navigate("/");
   }
 }

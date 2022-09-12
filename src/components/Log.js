@@ -69,7 +69,6 @@ const LogDescription = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  word-break: break-word;
   h2 {
     font-family: Raleway !important;
     font-size: 16px !important;
@@ -83,6 +82,8 @@ const LogDescription = styled.div`
     font-weight: 400 !important;
     margin-top: 0px !important;
     margin-left: 15px;
+    word-break: break-word;
+
   }
 `;
 
