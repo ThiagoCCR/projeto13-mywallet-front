@@ -54,7 +54,7 @@ export default function Home() {
         })
         .catch((error) => {
           console.log(error);
-          alert(error.message);
+          alert(error.response.data);
         });
     },
     [setEntryLog]
@@ -187,7 +187,7 @@ const LogContainer = styled.div`
   overflow-x: hidden;
   p {
     margin-top: 50%;
-    width: 60%;
+    width: 70%;
     font-family: "Raleway";
     font-weight: 400;
     font-size: 20px;

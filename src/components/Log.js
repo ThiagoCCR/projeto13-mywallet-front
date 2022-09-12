@@ -22,7 +22,7 @@ export default function Log({ description, value, date, type, id, getLogs }) {
         })
         .catch((err) => {
           console.log(err.message);
-          alert(err.message);
+          alert(err.response.data);
         });
     }
   }

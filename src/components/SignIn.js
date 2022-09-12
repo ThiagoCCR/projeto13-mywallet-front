@@ -33,7 +33,7 @@ export default function SignIn() {
       .catch((error) => {
         setEmail("");
         setPassword("");
-        alert(error.message);
+        alert(error.response.data);
         setisLoading(false);
       });
   }
@@ -124,7 +124,7 @@ const Login = styled.div`
       align-items: center;
       justify-content: center;
       width: 325px;
-      height: 60px;
+      height: 45px;
       font-family: "Raleway";
       border-radius: 5px;
       background-color: #a328d6;

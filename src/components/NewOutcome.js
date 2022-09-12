@@ -43,7 +43,7 @@ export default function NewOutcome() {
       .catch((error) => {
         console.log(error.message);
         setisLoading(false);
-        alert(error.message);
+        alert(error.response.data);
       });
   }
 
